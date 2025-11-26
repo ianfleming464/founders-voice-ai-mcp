@@ -1,7 +1,8 @@
 # Reference Repository Guide
 **Repo:** https://github.com/projectshft/cringe-influencer  
 **Purpose:** Technical reference for RAG patterns, NOT a template to copy  
-**Your Fork:** /Users/ianfleming/Desktop/Ian/cringe-influencer
+**Our Fork:** /Users/ianfleming/Desktop/Ian/cringe-influencer
+**Context Document:** See REFERENCE_REPO_CONTEXT.md for detailed analysis
 
 ---
 
@@ -17,7 +18,7 @@ A Next.js app that:
 
 ---
 
-## Key Differences from Your Project
+## Key Differences from Our Project
 
 | Aspect | Cringe Influencer | Founders Voice AI |
 |--------|------------------|-------------------|
@@ -27,7 +28,7 @@ A Next.js app that:
 | **Architecture** | Monolithic Next.js | Next.js + separate MCP server |
 | **Templates** | Search + regenerate | 3 specific templates (LinkedIn, investor, hiring) |
 
-**Your Advantage:** You're building infrastructure, not just an app.
+**Our Advantage:** You're building infrastructure, not just an app.
 
 ---
 
