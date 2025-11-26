@@ -4,7 +4,8 @@
       "Bash(npx tsx:*)",
       "Bash(cat:*)",
       "Bash(npm install:*)",
-      "Bash(DOTENV_CONFIG_PATH=.env.local npx tsx:*)"
+      "Bash(DOTENV_CONFIG_PATH=.env.local npx tsx:*)",
+      "Bash(npm run embed:*)"
     ],
     "deny": [],
     "ask": []

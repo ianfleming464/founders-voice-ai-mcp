@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "embed": "DOTENV_CONFIG_PATH=.env.local npx tsx scripts/embed.ts"
   },
   "dependencies": {
     "@pinecone-database/pinecone": "^6.1.3",
