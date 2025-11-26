@@ -28,7 +28,7 @@ A Next.js app that:
 | **Architecture** | Monolithic Next.js | Next.js + separate MCP server |
 | **Templates** | Search + regenerate | 3 specific templates (LinkedIn, investor, hiring) |
 
-**Our Advantage:** You're building infrastructure, not just an app.
+**Our Advantage:** We're building infrastructure, not just an app.
 
 ---
 
