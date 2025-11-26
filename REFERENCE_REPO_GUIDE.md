@@ -1,7 +1,7 @@
 # Reference Repository Guide
 **Repo:** https://github.com/projectshft/cringe-influencer  
 **Purpose:** Technical reference for RAG patterns, NOT a template to copy  
-**Your Fork:** (you have this locally)
+**Your Fork:** /Users/ianfleming/Desktop/Ian/cringe-influencer
 
 ---
 
