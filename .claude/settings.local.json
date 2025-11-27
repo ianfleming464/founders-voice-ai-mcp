@@ -7,7 +7,10 @@
       "Bash(DOTENV_CONFIG_PATH=.env.local npx tsx:*)",
       "Bash(npm run embed:*)",
       "Bash(npm run upload:*)",
-      "Bash(tree:*)"
+      "Bash(tree:*)",
+      "Bash(npm run dev:*)",
+      "Bash(curl:*)",
+      "Bash(python3:*)"
     ],
     "deny": [],
     "ask": []

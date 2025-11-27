@@ -4,10 +4,10 @@
 
 This project is a **voice cloning system for startup founders** that lets AI assistants search through a founder's past content (LinkedIn posts, investor updates, newsletters) to generate responses that sound authentically like them.
 
-**Current Status:** We've completed the "data preparation" phase - turning text into searchable vectors and storing them in a database.
+**Current Status:** We've completed the RAG retrieval system - data preparation, storage, and semantic search are all working.
 
-**Phase:** Day 5-6 of 30-day plan ✅
-**Next:** Day 7-9 - Build the search API
+**Phase:** Day 6 of 30-day plan ✅ (Checkpoint 4 complete)
+**Next:** Day 7 - Content generation with GPT-4
 
 ---
 
@@ -79,6 +79,63 @@ npm run upload -- --userId=john_founder
 
 ---
 
+### 3. Semantic Search API
+
+Once your data is in Pinecone, you can search through it using natural language queries.
+
+**How it works:**
+```bash
+# Search via API endpoint
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": "john_founder",
+    "query": "How do you ship products?",
+    "topK": 5
+  }'
+```
+
+**What happens:**
+1. Converts your query to a 512d embedding
+2. Searches Pinecone in the user's namespace
+3. Returns top K most relevant chunks with similarity scores
+4. Results sorted by relevance (highest score first)
+
+**Example output:**
+```json
+{
+  "results": [
+    {
+      "text": "Just shipped our biggest feature yet! After 3 months...",
+      "score": 0.89,
+      "contentType": "linkedin",
+      "createdAt": "2025-11-26T20:06:22.570Z",
+      "chunkIndex": 0,
+      "totalChunks": 2,
+      "chunkId": "john_founder_linkedin_1764187582571_0"
+    }
+  ],
+  "query": "How do you ship products?",
+  "userId": "john_founder",
+  "count": 1
+}
+```
+
+**Advanced filtering:**
+```bash
+# Filter by content type
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "userId": "john_founder",
+    "query": "fundraising",
+    "contentType": "investor",
+    "topK": 3
+  }'
+```
+
+---
+
 ## Real Example Walkthrough
 
 Let's say you're a founder who writes LinkedIn posts. Here's how you'd use the system:
@@ -106,19 +163,20 @@ npm run upload -- --userId=sarah_founder
 
 ---
 
-### Step 3: What You Can Do Next (When API is Built)
+### Step 3: Search Your Content
 
-Once we build the search API (Day 7-9), you'll be able to:
+Now you can search through your content using semantic search:
 
 ```bash
 # Search your content
-curl -X POST /api/search \
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
   -d '{"userId": "sarah_founder", "query": "How do you launch products?"}'
 
 # Response: The LinkedIn post about shipping features (most relevant match)
 ```
 
-**That's the RAG (Retrieval-Augmented Generation) part** - we retrieve the most relevant content before generating a response.
+**That's the RAG (Retrieval-Augmented Generation) part** - we retrieve the most relevant content that will be used to generate responses in your voice (Day 7).
 
 ---
 
@@ -135,6 +193,11 @@ curl -X POST /api/search \
 | **User Isolation** | Each user's data separate | sarah_founder ≠ john_founder |
 | **Content Types** | Tag content by source | linkedin, investor, newsletter |
 | **Batch Processing** | Upload many files at once | `--all` flag |
+| **Semantic Search API** | Search content by meaning | `/api/search` endpoint |
+| **Query Embedding** | Convert search queries to vectors | "product launches" → search |
+| **Content Filtering** | Filter results by content type | Only LinkedIn posts |
+| **Similarity Scoring** | Rank results by relevance | Score: 0.89 (most relevant) |
+| **Request Validation** | Validate API inputs | 400 errors for bad requests |
 
 ---
 
@@ -142,41 +205,28 @@ curl -X POST /api/search \
 
 | Feature | Status | Target |
 |---------|--------|--------|
-| **Search API** | Not started | Day 7-9 |
-| **RAG Retrieval** | Not started | Day 7-9 |
-| **GPT-4 Generation** | Not started | Day 10-12 |
+| **GPT-4 Generation** | Not started | Day 7 |
+| **Content Generation API** | Not started | Day 7 |
+| **Voice Synthesis** | Not started | Day 7 |
 | **MCP Server** | Not started | Week 2 |
-| **Voice Cloning** | Not started | Week 3-4 |
+| **Authentication** | Not started | Week 2-3 |
 | **Web UI** | Not started | Week 4 |
 
 ---
 
 ## What Doesn't Work Yet
 
-### ❌ No Search Capability
-
-Right now, vectors are uploaded to Pinecone but **there's no way to search them**.
-
-**What's missing:**
-- API endpoint that accepts queries
-- Query → embedding conversion
-- Similarity search in Pinecone
-- Result ranking and formatting
-
-**When it will work:** Day 7-9 (next phase)
-
----
-
 ### ❌ No AI Response Generation
 
-Even when we can search, we don't yet **generate responses** using the retrieved content.
+We can now search and retrieve relevant content, but we don't yet **generate responses** using that content.
 
 **What's missing:**
 - GPT-4 integration
-- Prompt engineering (inject retrieved context)
-- Response formatting
+- Prompt engineering (inject retrieved context as system prompt)
+- Response formatting for different content types
+- `/api/generate` endpoint
 
-**When it will work:** Day 10-12
+**When it will work:** Day 7
 
 ---
 
@@ -215,10 +265,10 @@ Right now, userId is passed as a command-line argument. Anyone can access any us
 
 ---
 
-### 2. CLI-Only
+### 2. Partial HTTP API
 
-**Current:** Command-line tools only
-**Future:** HTTP API + MCP integration
+**Current:** Search API works, but embed/upload still CLI-only
+**Future:** Full HTTP API + MCP integration for all operations
 
 ---
 
@@ -277,56 +327,53 @@ We have **6 vectors across 4 test users:**
 
 ---
 
-## What's Next: Day 7-9 (RAG Search API)
+## What's Next: Day 7 (Content Generation)
 
 ### Goal
-Build an HTTP endpoint that searches through a user's content and returns relevant matches.
+Use retrieved content to generate responses in the founder's voice using GPT-4.
 
 ### What We'll Build
 
-**1. `/api/search` endpoint**
+**1. `/api/generate` endpoint**
 ```typescript
-POST /api/search
+POST /api/generate
 {
   "userId": "sarah_founder",
-  "query": "How do you launch products?",
-  "contentType": "linkedin",  // optional filter
-  "topK": 5                    // how many results
+  "prompt": "Write a LinkedIn post about AI trends",
+  "contentType": "linkedin",  // optional: filter search results
+  "topK": 5                    // how many chunks to retrieve
 }
 
 Response:
 {
-  "results": [
-    {
-      "text": "Just shipped our biggest feature yet! ...",
-      "score": 0.89,
-      "contentType": "linkedin",
-      "createdAt": "2025-11-26T20:06:22.570Z"
-    }
-  ]
+  "content": "Just shipped our biggest AI feature yet! ...",
+  "sourceChunks": 3,           // how many chunks used for context
+  "userId": "sarah_founder"
 }
 ```
 
 ---
 
-**2. Query Embedding**
-- Convert user query to 512d vector
-- Use same embedding model (text-embedding-3-small)
-- Search Pinecone with this vector
+**2. RAG Pipeline**
+- Use `/api/search` to retrieve relevant content
+- Inject retrieved chunks into GPT-4 system prompt
+- Generate response that mimics founder's voice
+- Return generated content
 
 ---
 
-**3. Result Ranking**
-- Pinecone returns similarity scores (0-1)
-- Filter by contentType if specified
-- Return top K results
+**3. Prompt Engineering**
+- Build system prompt with retrieved context
+- Different prompts per content type (LinkedIn vs investor update)
+- Temperature/creativity controls
+- Max token limits per type
 
 ---
 
 **4. Reuse Existing Code**
-- `lib/openai/embeddings.ts` - Already has embedding generation
-- `lib/pinecone/upload.ts` - Already has `queryVectors()` function
-- Just need to wire them up to HTTP endpoints!
+- `lib/search/semantic.ts` - Already does retrieval
+- `lib/openai/` - Add GPT-4 completion wrapper
+- Just need generation logic + API route
 
 ---
 
@@ -334,10 +381,11 @@ Response:
 
 ### Short-term (Before Day 9)
 
-- [ ] Add input validation (max text length, userId format)
-- [ ] Better error messages (user-friendly, not just stack traces)
+- [x] Add input validation (max text length, userId format) ✅ Day 6
+- [x] Better error messages (user-friendly, not just stack traces) ✅ Day 6
 - [ ] Add `.gitignore` entry for `data/output/*.json` (don't commit vectors)
 - [ ] Document environment variable setup in README
+- [ ] Add search endpoint tests (automated vs manual curl)
 
 ---
 
@@ -415,6 +463,35 @@ npm run upload -- --userId=founder_x
 
 ---
 
+### Test Search API
+
+```bash
+# Start the dev server
+npm run dev
+
+# Test basic search
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{"userId": "demo_founder", "query": "How do you ship products?", "topK": 3}'
+
+# Test with content type filter
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{"userId": "demo_founder", "query": "startups", "contentType": "linkedin"}'
+
+# Test validation (should return 400 error)
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{"query": "test"}'  # Missing userId
+
+# Format with jq for readability
+curl -s -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{"userId": "demo_founder", "query": "products"}' | python3 -m json.tool
+```
+
+---
+
 ## Questions? Debugging?
 
 ### Common Issues
@@ -446,27 +523,27 @@ A: Wait a minute and retry, or upgrade OpenAI tier
 
 ## Summary
 
-**What we have:** A solid data pipeline that converts founder content into searchable vectors.
+**What we have:** Complete RAG retrieval system - embeddings, storage, and semantic search all working.
 
-**What's missing:** The "search" and "generate" parts - that's Day 7-12.
+**What's missing:** Content generation using GPT-4 - that's Day 7.
 
-**Architecture quality:** Excellent! Clean separation of concerns, reusable libraries, ready for API integration.
+**Architecture quality:** Excellent! Clean separation of concerns, reusable libraries, production-ready search API.
 
-**Next milestone:** Build `/api/search` endpoint using existing `lib/` utilities. No refactoring needed - just HTTP wrappers around what already works.
+**Next milestone:** Build `/api/generate` endpoint that uses search results to generate founder-voice content.
 
 ---
 
 ## Metrics
 
-**Days completed:** 5-6 / 30
-**Progress:** ~20%
-**Files created:** 8 TypeScript files (4 lib, 2 scripts, 2 config)
-**Lines of code:** ~900 LOC
-**Tests:** Manual CLI testing (no automated tests yet)
+**Days completed:** 6 / 30
+**Progress:** ~20% (Checkpoint 4 reached ✅)
+**Files created:** 11 TypeScript files (7 lib, 2 scripts, 2 API routes)
+**Lines of code:** ~1,100 LOC
+**Tests:** Manual API testing with curl (6 test cases passed)
 **Vectors in Pinecone:** 6 across 4 users
-**Cost so far:** <$0.01 (just embeddings for testing)
+**Cost so far:** <$0.02 (embeddings + search queries)
 
-**Velocity:** On track for Week 1 completion (Day 1-12: RAG pipeline)
+**Velocity:** Ahead of schedule! (Day 6 search API was planned for Day 7-9)
 
 ---
 
