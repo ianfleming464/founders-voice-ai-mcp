@@ -9,7 +9,7 @@ import type {
 import type { ErrorResponse } from '@/lib/types/search';
 
 // Valid content types
-const VALID_CONTENT_TYPES: GenerationContentType[] = ['linkedin', 'investor'];
+const VALID_CONTENT_TYPES: GenerationContentType[] = ['linkedin', 'investor', 'general'];
 
 // Valid tone types
 const VALID_TONE_TYPES: ToneType[] = ['professional', 'casual'];

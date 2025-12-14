@@ -1,5 +1,5 @@
 // Content types for generation
-export type GenerationContentType = 'linkedin' | 'investor';
+export type GenerationContentType = 'linkedin' | 'investor' | 'general';
 
 // Tone options
 export type ToneType = 'professional' | 'casual';
@@ -49,5 +49,13 @@ export const TEMPLATE_CONFIGS: Record<GenerationContentType, TemplateConfig> = {
     maxTokens: 800,
     temperature: 0.6, // More structured for investor updates
     defaultTopK: 7,
+  },
+  general: {
+    contentType: 'general',
+    minWords: 150,
+    maxWords: 300,
+    maxTokens: 400,
+    temperature: 0.7, // Balanced temperature for general content
+    defaultTopK: 5,
   },
 };

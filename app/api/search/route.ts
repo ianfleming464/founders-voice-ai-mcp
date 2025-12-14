@@ -3,7 +3,7 @@ import { semanticSearch } from '@/lib/search/semantic';
 import type { SearchRequest, SearchResponse, ErrorResponse } from '@/lib/types/search';
 
 // Valid content types
-const VALID_CONTENT_TYPES = ['linkedin', 'investor', 'newsletter'] as const;
+const VALID_CONTENT_TYPES = ['linkedin', 'investor', 'newsletter', 'general'] as const;
 
 // Validation constants
 const MAX_QUERY_LENGTH = 1000;

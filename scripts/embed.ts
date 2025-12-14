@@ -23,7 +23,7 @@ import { createEmbeddings } from '../lib/openai/embeddings';
 import { chunkText } from '../lib/utils/chunker';
 
 // Types
-type ContentType = 'linkedin' | 'investor' | 'newsletter';
+type ContentType = 'linkedin' | 'investor' | 'newsletter' | 'general';
 
 interface EmbeddingRecord {
   id: string;
@@ -78,8 +78,8 @@ function parseArgs(): { userId: string; contentType: ContentType; text: string }
     process.exit(1);
   }
 
-  if (!['linkedin', 'investor', 'newsletter'].includes(contentType)) {
-    console.error('❌ Invalid contentType. Must be: linkedin, investor, or newsletter');
+  if (!['linkedin', 'investor', 'newsletter', 'general'].includes(contentType)) {
+    console.error('❌ Invalid contentType. Must be: linkedin, investor, newsletter, or general');
     process.exit(1);
   }
 

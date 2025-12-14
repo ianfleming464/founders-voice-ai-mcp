@@ -116,6 +116,9 @@ export async function generateContent(
     case 'investor':
       systemPrompt = buildInvestorUpdateSystemPrompt(context);
       break;
+    case 'general':
+      systemPrompt = buildLinkedInSystemPrompt(context, tone); // Reuse LinkedIn prompt for general content
+      break;
     default:
       throw new Error(`Unsupported content type: ${contentType}`);
   }

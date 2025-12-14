@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
-interface GenerationResponse {
+interface GenericResponse {
+  content: string;
+}
+
+interface RAGResponse {
   content: string;
   sourceChunks: number;
   userId: string;
@@ -10,47 +14,62 @@ interface GenerationResponse {
   prompt: string;
 }
 
-export default function Home() {
-  const [userId, setUserId] = useState('demo_founder');
-  const [contentType, setContentType] = useState<'linkedin' | 'investor'>('linkedin');
+export default function HomePage() {
   const [prompt, setPrompt] = useState('');
-  const [tone, setTone] = useState<'professional' | 'casual'>('professional');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<GenerationResponse | null>(null);
+  const [genericResult, setGenericResult] = useState<GenericResponse | null>(null);
+  const [ragResult, setRAGResult] = useState<RAGResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!userId.trim() || !prompt.trim()) {
-      setError('Please provide both User ID and Prompt');
+    if (!prompt.trim()) {
+      setError('Please enter a topic');
       return;
     }
 
     setLoading(true);
     setError(null);
-    setResult(null);
+    setGenericResult(null);
+    setRAGResult(null);
 
     try {
-      const response = await fetch('/api/generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userId: userId.trim(),
-          contentType,
-          prompt: prompt.trim(),
-          tone,
+      const [genericResponse, ragResponse] = await Promise.all([
+        fetch('/api/generate-generic', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt: prompt.trim() }),
         }),
-      });
+        fetch('/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: 'paul_graham',
+            contentType: 'general',
+            prompt: prompt.trim(),
+            tone: 'professional',
+          }),
+        }),
+      ]);
 
-      const data = await response.json();
+      const [genericData, ragData] = await Promise.all([
+        genericResponse.json(),
+        ragResponse.json(),
+      ]);
 
-      if (!response.ok) {
-        setError(data.error || 'Failed to generate content');
+      if (!genericResponse.ok) {
+        setError(`Generic AI error: ${genericData.error || 'Failed to generate'}`);
         return;
       }
 
-      setResult(data);
+      if (!ragResponse.ok) {
+        setError(`RAG error: ${ragData.error || 'Failed to generate'}`);
+        return;
+      }
+
+      setGenericResult(genericData);
+      setRAGResult(ragData);
     } catch (err) {
       setError('Network error - please try again');
       console.error('Generation error:', err);
@@ -59,159 +78,499 @@ export default function Home() {
     }
   };
 
+  const scrollToDemo = () => {
+    document.getElementById('demo')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-zinc-50 to-zinc-100 dark:from-zinc-900 dark:to-black py-12 px-4">
-      <main className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50 mb-3">
-            Founders Voice AI
+    <div className="min-h-screen relative">
+      {/* Hero Section */}
+      <section className="max-w-6xl mx-auto px-4 py-20 text-center relative z-10">
+        <div className="mb-12">
+          <h1
+            className="text-6xl md:text-7xl font-bold mb-6 text-glow-purple"
+            style={{ fontFamily: 'var(--font-outfit)' }}
+          >
+            Your Voice, Accessible to
+            <br />
+            <span
+              className="text-glow-cyan"
+              style={{
+                background: 'linear-gradient(135deg, var(--cyan-glow), var(--emerald-glow))',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}
+            >
+              Any AI Assistant
+            </span>
           </h1>
-          <p className="text-lg text-zinc-600 dark:text-zinc-400">
-            Generate content in your authentic voice using RAG-powered AI
+          <p
+            className="text-xl max-w-3xl mx-auto mb-10 leading-relaxed"
+            style={{
+              color: 'rgba(255, 255, 255, 0.8)',
+              fontFamily: 'var(--font-dm-sans)'
+            }}
+          >
+            Voice cloning for startup founders using RAG + MCP. Generate authentic content
+            that sounds like you, directly from your AI assistant.
           </p>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleGenerate} className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-8 mb-8">
-          {/* User ID */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-              User ID
-            </label>
-            <input
-              type="text"
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg
-                         bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100
-                         focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="e.g., demo_founder"
-            />
-          </div>
+        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+          <button
+            onClick={scrollToDemo}
+            className="px-10 py-5 font-semibold rounded-2xl transition-all duration-300 hover:scale-105 neon-glow-purple"
+            style={{
+              fontFamily: 'var(--font-outfit)',
+              background: 'linear-gradient(135deg, var(--deep-purple), var(--royal-purple))',
+              color: 'var(--glass-white)',
+              fontSize: '1.125rem'
+            }}
+          >
+            Try Paul Graham's Voice ✨
+          </button>
+          <button
+            className="px-10 py-5 font-semibold rounded-2xl transition-all duration-300 glass-card"
+            style={{
+              fontFamily: 'var(--font-outfit)',
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontSize: '1.125rem'
+            }}
+            disabled
+          >
+            Create Your Own Voice
+            <span className="ml-2 text-sm">(Coming Soon)</span>
+          </button>
+        </div>
 
-          {/* Content Type */}
-          <div className="mb-6">
-            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-              Content Type
-            </label>
-            <div className="flex gap-4">
-              <button
-                type="button"
-                onClick={() => setContentType('linkedin')}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
-                  contentType === 'linkedin'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-600'
-                }`}
-              >
-                LinkedIn Post
-              </button>
-              <button
-                type="button"
-                onClick={() => setContentType('investor')}
-                className={`flex-1 py-3 px-4 rounded-lg font-medium transition-colors ${
-                  contentType === 'investor'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-600'
-                }`}
-              >
-                Investor Update
-              </button>
-            </div>
-          </div>
+        <div
+          className="mt-8 inline-flex gap-3 items-center px-6 py-3 glass-card rounded-full"
+          style={{ fontFamily: 'var(--font-dm-sans)', fontSize: '0.875rem' }}
+        >
+          <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+          <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
+            Currently in beta • MCP integration Week 2 • Authentication Week 3
+          </span>
+        </div>
+      </section>
 
-          {/* Tone (only for LinkedIn) */}
-          {contentType === 'linkedin' && (
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-                Tone
-              </label>
-              <div className="flex gap-4">
-                <button
-                  type="button"
-                  onClick={() => setTone('professional')}
-                  className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
-                    tone === 'professional'
-                      ? 'bg-zinc-800 dark:bg-zinc-600 text-white'
-                      : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-600'
-                  }`}
-                >
-                  Professional
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTone('casual')}
-                  className={`flex-1 py-2 px-4 rounded-lg font-medium transition-colors ${
-                    tone === 'casual'
-                      ? 'bg-zinc-800 dark:bg-zinc-600 text-white'
-                      : 'bg-zinc-100 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-200 dark:hover:bg-zinc-600'
-                  }`}
-                >
-                  Casual
-                </button>
-              </div>
-            </div>
-          )}
+      {/* Demo Section */}
+      <section id="demo" className="max-w-7xl mx-auto px-4 py-20 relative z-10">
+        <div className="text-center mb-16">
+          <h2
+            className="text-5xl font-bold mb-4 text-glow-emerald"
+            style={{ fontFamily: 'var(--font-outfit)' }}
+          >
+            See the Difference
+          </h2>
+          <p
+            className="text-xl"
+            style={{
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontFamily: 'var(--font-dm-sans)'
+            }}
+          >
+            Compare standard AI vs authentic voice cloning powered by RAG
+          </p>
+        </div>
 
-          {/* Prompt */}
+        {/* Demo Form */}
+        <form onSubmit={handleGenerate} className="glass-card rounded-3xl p-8 mb-12 max-w-4xl mx-auto">
           <div className="mb-6">
-            <label className="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-2">
-              {contentType === 'linkedin' ? 'Topic / Idea' : 'Key Points / Topic'}
+            <label
+              className="block text-sm font-medium mb-3"
+              style={{
+                color: 'var(--glass-white)',
+                fontFamily: 'var(--font-dm-sans)'
+              }}
+            >
+              Enter your topic or idea
             </label>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              rows={4}
-              className="w-full px-4 py-2 border border-zinc-300 dark:border-zinc-600 rounded-lg
-                         bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100
-                         focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-y"
-              placeholder={
-                contentType === 'linkedin'
-                  ? 'e.g., The importance of shipping fast and iterating'
-                  : 'e.g., Q4 progress: launched new feature, hit 10K users, raising Series A'
-              }
+              rows={3}
+              className="glass-input w-full px-6 py-4 rounded-2xl resize-none text-lg"
+              placeholder="e.g., The importance of shipping fast and iterating"
+              style={{ fontFamily: 'var(--font-dm-sans)' }}
             />
           </div>
 
-          {/* Generate Button */}
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 px-6 bg-blue-600 hover:bg-blue-700 disabled:bg-zinc-400
-                       text-white font-semibold rounded-lg transition-colors"
+            className="w-full py-5 font-semibold rounded-2xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed neon-glow-cyan"
+            style={{
+              fontFamily: 'var(--font-outfit)',
+              background: loading
+                ? 'rgba(255, 255, 255, 0.1)'
+                : 'linear-gradient(135deg, var(--cyan-glow), var(--royal-purple))',
+              color: 'var(--glass-white)',
+              fontSize: '1.125rem'
+            }}
           >
-            {loading ? 'Generating...' : 'Generate Content'}
+            {loading ? (
+              <span className="flex items-center justify-center gap-3">
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                Generating...
+              </span>
+            ) : (
+              'Generate Comparison'
+            )}
           </button>
         </form>
 
         {/* Error */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800
-                          rounded-lg p-4 mb-8">
-            <p className="text-red-800 dark:text-red-200">{error}</p>
+          <div className="glass-card rounded-2xl p-6 mb-8 max-w-4xl mx-auto border-red-500/30">
+            <p style={{ color: '#ff6b6b', fontFamily: 'var(--font-dm-sans)' }}>{error}</p>
           </div>
         )}
 
-        {/* Results */}
-        {result && (
-          <div className="bg-white dark:bg-zinc-800 rounded-xl shadow-lg p-8">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-                Generated Content
-              </h2>
-              <span className="text-sm text-zinc-500 dark:text-zinc-400">
-                {result.sourceChunks} source chunks used
-              </span>
-            </div>
-            <div className="prose dark:prose-invert max-w-none">
-              <div className="whitespace-pre-wrap text-zinc-800 dark:text-zinc-200 leading-relaxed">
-                {result.content}
+        {/* Results - Side by Side */}
+        {(genericResult || ragResult) && (
+          <>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+              {/* Generic AI Column */}
+              <div className="glass-card rounded-3xl p-8">
+                <div className="mb-6">
+                  <h3
+                    className="text-2xl font-bold mb-2"
+                    style={{
+                      fontFamily: 'var(--font-outfit)',
+                      color: 'var(--glass-white)'
+                    }}
+                  >
+                    Generic AI
+                  </h3>
+                  <p style={{
+                    color: 'rgba(255, 255, 255, 0.5)',
+                    fontFamily: 'var(--font-dm-sans)',
+                    fontSize: '0.875rem'
+                  }}>
+                    Standard GPT-4 • No retrieval • No context
+                  </p>
+                </div>
+                {genericResult ? (
+                  <div
+                    className="leading-relaxed"
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.85)',
+                      fontFamily: 'var(--font-dm-sans)',
+                      whiteSpace: 'pre-wrap'
+                    }}
+                  >
+                    {genericResult.content}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  </div>
+                )}
+              </div>
+
+              {/* Paul Graham Voice Column */}
+              <div
+                className="rounded-3xl p-8 glass-card"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(107, 45, 255, 0.15), rgba(0, 212, 255, 0.1))',
+                  backdropFilter: 'blur(20px)',
+                  WebkitBackdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(0, 212, 255, 0.3)',
+                  boxShadow: '0 0 40px rgba(0, 212, 255, 0.2)'
+                }}
+              >
+                <div className="mb-6">
+                  <h3
+                    className="text-2xl font-bold mb-2 text-glow-cyan"
+                    style={{ fontFamily: 'var(--font-outfit)' }}
+                  >
+                    Paul Graham Voice (RAG)
+                  </h3>
+                  <p style={{
+                    color: 'rgba(0, 212, 255, 0.9)',
+                    fontFamily: 'var(--font-dm-sans)',
+                    fontSize: '0.875rem'
+                  }}>
+                    {ragResult
+                      ? `Powered by ${ragResult.sourceChunks} source chunks from PG essays`
+                      : 'RAG-powered voice cloning'}
+                  </p>
+                </div>
+                {ragResult ? (
+                  <div
+                    className="leading-relaxed"
+                    style={{
+                      color: 'rgba(255, 255, 255, 0.9)',
+                      fontFamily: 'var(--font-dm-sans)',
+                      whiteSpace: 'pre-wrap'
+                    }}
+                  >
+                    {ragResult.content}
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-center h-64">
+                    <div className="w-8 h-8 border-2 border-cyan-400/30 border-t-cyan-400 rounded-full animate-spin"></div>
+                  </div>
+                )}
               </div>
             </div>
+
+            {/* CTA After Generation */}
+            <div className="glass-card rounded-3xl p-10 text-center max-w-4xl mx-auto">
+              <h3
+                className="text-3xl font-bold mb-4 text-glow-purple"
+                style={{ fontFamily: 'var(--font-outfit)' }}
+              >
+                Want your own voice?
+              </h3>
+              <p
+                className="mb-8 text-lg"
+                style={{
+                  color: 'rgba(255, 255, 255, 0.7)',
+                  fontFamily: 'var(--font-dm-sans)'
+                }}
+              >
+                Train your voice with your own content and generate authentic posts, updates, and more.
+              </p>
+              <button
+                className="px-10 py-5 font-semibold rounded-2xl transition-all duration-300 glass-card"
+                style={{
+                  fontFamily: 'var(--font-outfit)',
+                  color: 'rgba(255, 255, 255, 0.5)',
+                  fontSize: '1.125rem'
+                }}
+                disabled
+              >
+                Get Started
+                <span className="ml-2 text-sm opacity-75">(Coming in Week 3)</span>
+              </button>
+            </div>
+          </>
+        )}
+
+        {/* Instructions */}
+        {!genericResult && !ragResult && !loading && (
+          <div className="glass-card rounded-3xl p-8 max-w-4xl mx-auto">
+            <h3
+              className="font-semibold text-xl mb-4"
+              style={{
+                fontFamily: 'var(--font-outfit)',
+                color: 'var(--glass-white)'
+              }}
+            >
+              How this demo works:
+            </h3>
+            <ul
+              className="space-y-3"
+              style={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontFamily: 'var(--font-dm-sans)'
+              }}
+            >
+              <li className="flex items-start gap-3">
+                <span style={{ color: 'var(--cyan-glow)' }}>•</span>
+                <span><strong style={{ color: 'var(--glass-white)' }}>Left (Generic AI):</strong> Standard GPT-4 with no knowledge of Paul Graham's writing style</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span style={{ color: 'var(--emerald-glow)' }}>•</span>
+                <span><strong style={{ color: 'var(--glass-white)' }}>Right (PG Voice):</strong> RAG pipeline retrieves relevant chunks from 100K words of PG essays, then generates content matching his voice</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <span style={{ color: 'var(--deep-purple)' }}>•</span>
+                <span>Both use the same prompt - the difference shows the power of RAG-based voice cloning</span>
+              </li>
+            </ul>
           </div>
         )}
-      </main>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="max-w-6xl mx-auto px-4 py-20 relative z-10">
+        <div className="text-center mb-16">
+          <h2
+            className="text-5xl font-bold mb-4 text-glow-purple"
+            style={{ fontFamily: 'var(--font-outfit)' }}
+          >
+            How It Works
+          </h2>
+          <p
+            className="text-xl"
+            style={{
+              color: 'rgba(255, 255, 255, 0.7)',
+              fontFamily: 'var(--font-dm-sans)'
+            }}
+          >
+            Three simple steps to voice cloning with AI infrastructure
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* Step 1 */}
+          <div className="glass-card rounded-3xl p-8 text-center group hover:neon-glow-purple">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+              style={{
+                background: 'linear-gradient(135deg, var(--deep-purple), var(--royal-purple))',
+                boxShadow: '0 0 30px rgba(107, 45, 255, 0.4)'
+              }}
+            >
+              <span
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: 'var(--font-outfit)',
+                  color: 'var(--glass-white)'
+                }}
+              >
+                1
+              </span>
+            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: 'var(--font-outfit)',
+                color: 'var(--glass-white)'
+              }}
+            >
+              Train Your Voice
+            </h3>
+            <p
+              className="mb-3"
+              style={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontFamily: 'var(--font-dm-sans)'
+              }}
+            >
+              Paste 1,000+ words of your writing. We use RAG to learn your authentic voice, vocabulary, and style.
+            </p>
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontFamily: 'var(--font-dm-sans)',
+              fontSize: '0.875rem'
+            }}>
+              (Week 3 feature)
+            </p>
+          </div>
+
+          {/* Step 2 */}
+          <div className="glass-card rounded-3xl p-8 text-center group hover:neon-glow-cyan">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+              style={{
+                background: 'linear-gradient(135deg, var(--cyan-glow), var(--royal-purple))',
+                boxShadow: '0 0 30px rgba(0, 212, 255, 0.4)'
+              }}
+            >
+              <span
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: 'var(--font-outfit)',
+                  color: 'var(--glass-white)'
+                }}
+              >
+                2
+              </span>
+            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: 'var(--font-outfit)',
+                color: 'var(--glass-white)'
+              }}
+            >
+              Generate Content
+            </h3>
+            <p
+              className="mb-3"
+              style={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontFamily: 'var(--font-dm-sans)'
+              }}
+            >
+              Create LinkedIn posts, investor updates, and more. Every piece sounds authentically like you.
+            </p>
+            <p style={{
+              color: 'var(--cyan-glow)',
+              fontFamily: 'var(--font-dm-sans)',
+              fontSize: '0.875rem',
+              fontWeight: '600'
+            }}>
+              (Available now - try demo above)
+            </p>
+          </div>
+
+          {/* Step 3 */}
+          <div className="glass-card rounded-3xl p-8 text-center group hover:neon-glow-emerald">
+            <div
+              className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+              style={{
+                background: 'linear-gradient(135deg, var(--emerald-glow), var(--cyan-glow))',
+                boxShadow: '0 0 30px rgba(0, 255, 157, 0.4)'
+              }}
+            >
+              <span
+                className="text-3xl font-bold"
+                style={{
+                  fontFamily: 'var(--font-outfit)',
+                  color: 'var(--glass-white)'
+                }}
+              >
+                3
+              </span>
+            </div>
+            <h3
+              className="text-2xl font-semibold mb-4"
+              style={{
+                fontFamily: 'var(--font-outfit)',
+                color: 'var(--glass-white)'
+              }}
+            >
+              Integrate with AI
+            </h3>
+            <p
+              className="mb-3"
+              style={{
+                color: 'rgba(255, 255, 255, 0.7)',
+                fontFamily: 'var(--font-dm-sans)'
+              }}
+            >
+              Use MCP to connect with Claude Desktop, Cursor, and any AI assistant. Generate in your voice, anywhere.
+            </p>
+            <p style={{
+              color: 'rgba(255, 255, 255, 0.5)',
+              fontFamily: 'var(--font-dm-sans)',
+              fontSize: '0.875rem'
+            }}>
+              (Week 2 feature)
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer
+        className="relative z-10 mt-32 py-12"
+        style={{
+          borderTop: '1px solid var(--glass-border)',
+          background: 'rgba(18, 8, 40, 0.6)',
+          backdropFilter: 'blur(16px)'
+        }}
+      >
+        <div className="max-w-6xl mx-auto px-4">
+          <div
+            className="flex flex-col md:flex-row justify-between items-center gap-4"
+            style={{
+              color: 'rgba(255, 255, 255, 0.6)',
+              fontFamily: 'var(--font-dm-sans)',
+              fontSize: '0.875rem'
+            }}
+          >
+            <p>Founders Voice AI - RAG-powered voice cloning</p>
+            <p>Built with Next.js, OpenAI, Pinecone, and MCP</p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
