@@ -112,7 +112,7 @@ export default function HomePage() {
               fontFamily: 'var(--font-dm-sans)'
             }}
           >
-            Voice cloning for startup founders using RAG + MCP. Generate authentic content
+            Voice cloning for startup founders using RAG architecture. Generate authentic content
             that sounds like you, directly from your AI assistant.
           </p>
         </div>
