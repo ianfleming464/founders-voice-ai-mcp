@@ -4,22 +4,33 @@ export type GenerationContentType = 'linkedin' | 'investor' | 'general';
 // Tone options
 export type ToneType = 'professional' | 'casual';
 
-// Generation request
+/**
+ * Generation request payload.
+ *
+ * - `topK`: how many chunks to retrieve for context.
+ * - `tone`: optional tone override for the generated output.
+ */
 export interface GenerationRequest {
   userId: string;
   contentType: GenerationContentType;
   prompt: string;
-  topK?: number; // How many chunks to retrieve for context
-  tone?: ToneType; // Optional tone parameter
+  topK?: number;
+  tone?: ToneType;
 }
 
-// Generation response
+/**
+ * Generation response payload.
+ *
+ * - `content`: generated content returned to the caller.
+ * - `sourceChunks`: number of chunks used as context.
+ * - `prompt`: echoes the original prompt.
+ */
 export interface GenerationResponse {
-  content: string; // Generated content
-  sourceChunks: number; // Number of chunks used for context
+  content: string;
+  sourceChunks: number;
   userId: string;
   contentType: GenerationContentType;
-  prompt: string; // Echo back the prompt
+  prompt: string;
 }
 
 // Template metadata

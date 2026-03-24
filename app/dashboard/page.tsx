@@ -59,35 +59,34 @@ export default function DashboardPage() {
     }
   };
 
+  const activeStyle = {
+    background: 'var(--text-primary)',
+    color: 'white',
+  };
+
+  const inactiveStyle = {
+    color: 'var(--text-secondary)',
+  };
+
   return (
-    <div className="min-h-screen relative py-12 px-4">
-      <main className="max-w-5xl mx-auto relative z-10">
+    <div className="min-h-screen py-12 px-4">
+      <main className="max-w-3xl mx-auto">
         {/* Dev Mode Notice */}
         <div
-          className="glass-card rounded-3xl p-6 mb-10"
-          style={{
-            background: 'linear-gradient(135deg, rgba(255, 157, 0, 0.1), rgba(255, 100, 0, 0.08))',
-            border: '1px solid rgba(255, 157, 0, 0.3)'
-          }}
+          className="rounded-2xl p-5 mb-10"
+          style={{ background: '#fffbeb', border: '1px solid #fde68a' }}
         >
-          <div className="flex items-start gap-4">
-            <span className="text-3xl">🔧</span>
+          <div className="flex items-start gap-3">
+            <span className="text-xl">🔧</span>
             <div>
               <h3
-                className="font-semibold text-xl mb-2"
-                style={{
-                  fontFamily: 'var(--font-outfit)',
-                  color: 'rgba(255, 200, 100, 1)'
-                }}
+                className="font-semibold text-base mb-1"
+                style={{ fontFamily: 'var(--font-outfit)', color: '#92400e' }}
               >
                 Dev Mode: Manual Testing Interface
               </h3>
-              <p style={{
-                color: 'rgba(255, 255, 255, 0.7)',
-                fontFamily: 'var(--font-dm-sans)',
-                fontSize: '0.9rem'
-              }}>
-                This page allows direct API testing with manual userId input. Authentication and user profiles coming in Week 3.
+              <p style={{ color: '#a16207', fontFamily: 'var(--font-dm-sans)', fontSize: '0.875rem' }}>
+                This page allows direct API testing with manual userId input.
               </p>
             </div>
           </div>
@@ -96,171 +95,98 @@ export default function DashboardPage() {
         {/* Header */}
         <div className="text-center mb-12">
           <h1
-            className="text-5xl font-bold mb-4 text-glow-purple"
-            style={{ fontFamily: 'var(--font-outfit)' }}
+            className="text-4xl font-bold mb-3"
+            style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
           >
             Dashboard
           </h1>
           <p
-            className="text-xl"
-            style={{
-              color: 'rgba(255, 255, 255, 0.7)',
-              fontFamily: 'var(--font-dm-sans)'
-            }}
+            className="text-lg"
+            style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
           >
             Generate content in your authentic voice using RAG-powered AI
           </p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleGenerate} className="glass-card rounded-3xl p-10 mb-10">
+        <form onSubmit={handleGenerate} className="glass-card rounded-2xl p-8 mb-10">
           {/* User ID */}
-          <div className="mb-8">
+          <div className="mb-6">
             <label
-              className="block text-sm font-medium mb-3"
-              style={{
-                color: 'var(--glass-white)',
-                fontFamily: 'var(--font-dm-sans)'
-              }}
+              className="block text-sm font-medium mb-2"
+              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
             >
               User ID
-              <span
-                className="ml-2 text-xs"
-                style={{ color: 'rgba(255, 255, 255, 0.5)' }}
-              >
-                (Will be auto-filled after auth in Week 3)
-              </span>
             </label>
             <input
               type="text"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
-              className="glass-input w-full px-6 py-4 rounded-2xl text-lg"
-              placeholder="e.g., paul_graham, demo_founder"
+              className="glass-input w-full px-5 py-3 rounded-xl text-base"
+              placeholder="e.g., demo_founder"
               style={{ fontFamily: 'var(--font-dm-sans)' }}
             />
           </div>
 
           {/* Content Type */}
-          <div className="mb-8">
+          <div className="mb-6">
             <label
-              className="block text-sm font-medium mb-4"
-              style={{
-                color: 'var(--glass-white)',
-                fontFamily: 'var(--font-dm-sans)'
-              }}
+              className="block text-sm font-medium mb-3"
+              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
             >
               Content Type
             </label>
-            <div className="grid grid-cols-3 gap-4">
-              <button
-                type="button"
-                onClick={() => setContentType('linkedin')}
-                className={`py-4 px-6 rounded-2xl font-medium transition-all duration-300 ${
-                  contentType === 'linkedin' ? 'neon-glow-purple' : 'glass-card'
-                }`}
-                style={{
-                  fontFamily: 'var(--font-outfit)',
-                  background: contentType === 'linkedin'
-                    ? 'linear-gradient(135deg, var(--deep-purple), var(--royal-purple))'
-                    : undefined,
-                  color: contentType === 'linkedin' ? 'var(--glass-white)' : 'rgba(255, 255, 255, 0.7)'
-                }}
-              >
-                LinkedIn Post
-              </button>
-              <button
-                type="button"
-                onClick={() => setContentType('investor')}
-                className={`py-4 px-6 rounded-2xl font-medium transition-all duration-300 ${
-                  contentType === 'investor' ? 'neon-glow-cyan' : 'glass-card'
-                }`}
-                style={{
-                  fontFamily: 'var(--font-outfit)',
-                  background: contentType === 'investor'
-                    ? 'linear-gradient(135deg, var(--cyan-glow), var(--royal-purple))'
-                    : undefined,
-                  color: contentType === 'investor' ? 'var(--glass-white)' : 'rgba(255, 255, 255, 0.7)'
-                }}
-              >
-                Investor Update
-              </button>
-              <button
-                type="button"
-                onClick={() => setContentType('general')}
-                className={`py-4 px-6 rounded-2xl font-medium transition-all duration-300 ${
-                  contentType === 'general' ? 'neon-glow-emerald' : 'glass-card'
-                }`}
-                style={{
-                  fontFamily: 'var(--font-outfit)',
-                  background: contentType === 'general'
-                    ? 'linear-gradient(135deg, var(--emerald-glow), var(--cyan-glow))'
-                    : undefined,
-                  color: contentType === 'general' ? 'var(--glass-white)' : 'rgba(255, 255, 255, 0.7)'
-                }}
-              >
-                General
-              </button>
+            <div className="grid grid-cols-3 gap-3">
+              {(['linkedin', 'investor', 'general'] as const).map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setContentType(type)}
+                  className="py-3 px-4 rounded-xl font-medium text-sm transition-all glass-card"
+                  style={{
+                    fontFamily: 'var(--font-outfit)',
+                    ...(contentType === type ? activeStyle : inactiveStyle),
+                  }}
+                >
+                  {type === 'linkedin' ? 'LinkedIn Post' : type === 'investor' ? 'Investor Update' : 'General'}
+                </button>
+              ))}
             </div>
           </div>
 
           {/* Tone (only for LinkedIn) */}
           {contentType === 'linkedin' && (
-            <div className="mb-8">
+            <div className="mb-6">
               <label
-                className="block text-sm font-medium mb-4"
-                style={{
-                  color: 'var(--glass-white)',
-                  fontFamily: 'var(--font-dm-sans)'
-                }}
+                className="block text-sm font-medium mb-3"
+                style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
               >
                 Tone
               </label>
-              <div className="flex gap-4">
-                <button
-                  type="button"
-                  onClick={() => setTone('professional')}
-                  className={`flex-1 py-3 px-6 rounded-2xl font-medium transition-all duration-300 ${
-                    tone === 'professional' ? 'neon-glow-purple' : 'glass-card'
-                  }`}
-                  style={{
-                    fontFamily: 'var(--font-outfit)',
-                    background: tone === 'professional'
-                      ? 'linear-gradient(135deg, var(--deep-purple), var(--royal-purple))'
-                      : undefined,
-                    color: tone === 'professional' ? 'var(--glass-white)' : 'rgba(255, 255, 255, 0.7)'
-                  }}
-                >
-                  Professional
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setTone('casual')}
-                  className={`flex-1 py-3 px-6 rounded-2xl font-medium transition-all duration-300 ${
-                    tone === 'casual' ? 'neon-glow-purple' : 'glass-card'
-                  }`}
-                  style={{
-                    fontFamily: 'var(--font-outfit)',
-                    background: tone === 'casual'
-                      ? 'linear-gradient(135deg, var(--deep-purple), var(--royal-purple))'
-                      : undefined,
-                    color: tone === 'casual' ? 'var(--glass-white)' : 'rgba(255, 255, 255, 0.7)'
-                  }}
-                >
-                  Casual
-                </button>
+              <div className="flex gap-3">
+                {(['professional', 'casual'] as const).map((t) => (
+                  <button
+                    key={t}
+                    type="button"
+                    onClick={() => setTone(t)}
+                    className="flex-1 py-3 px-4 rounded-xl font-medium text-sm transition-all glass-card"
+                    style={{
+                      fontFamily: 'var(--font-outfit)',
+                      ...(tone === t ? activeStyle : inactiveStyle),
+                    }}
+                  >
+                    {t.charAt(0).toUpperCase() + t.slice(1)}
+                  </button>
+                ))}
               </div>
             </div>
           )}
 
           {/* Prompt */}
-          <div className="mb-8">
+          <div className="mb-6">
             <label
-              className="block text-sm font-medium mb-3"
-              style={{
-                color: 'var(--glass-white)',
-                fontFamily: 'var(--font-dm-sans)'
-              }}
+              className="block text-sm font-medium mb-2"
+              style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
             >
               {contentType === 'linkedin' ? 'Topic / Idea' : contentType === 'investor' ? 'Key Points / Topic' : 'Topic / Idea'}
             </label>
@@ -268,7 +194,7 @@ export default function DashboardPage() {
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               rows={5}
-              className="glass-input w-full px-6 py-4 rounded-2xl resize-y text-lg"
+              className="glass-input w-full px-5 py-4 rounded-xl resize-y text-base"
               placeholder={
                 contentType === 'linkedin'
                   ? 'e.g., The importance of shipping fast and iterating'
@@ -281,22 +207,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Generate Button */}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-5 font-semibold rounded-2xl transition-all duration-300 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed neon-glow-purple"
-            style={{
-              fontFamily: 'var(--font-outfit)',
-              background: loading
-                ? 'rgba(255, 255, 255, 0.1)'
-                : 'linear-gradient(135deg, var(--deep-purple), var(--royal-purple))',
-              color: 'var(--glass-white)',
-              fontSize: '1.125rem'
-            }}
-          >
+          <button type="submit" disabled={loading} className="btn-generate">
             {loading ? (
               <span className="flex items-center justify-center gap-3">
-                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
                 Generating...
               </span>
             ) : (
@@ -307,27 +221,24 @@ export default function DashboardPage() {
 
         {/* Error */}
         {error && (
-          <div className="glass-card rounded-2xl p-6 mb-8 border-red-500/30">
-            <p style={{ color: '#ff6b6b', fontFamily: 'var(--font-dm-sans)' }}>{error}</p>
+          <div className="rounded-xl p-5 mb-8" style={{ background: '#fef2f2', border: '1px solid #fecaca' }}>
+            <p style={{ color: '#dc2626', fontFamily: 'var(--font-dm-sans)', fontSize: '0.9375rem' }}>{error}</p>
           </div>
         )}
 
         {/* Results */}
         {result && (
-          <div className="glass-card rounded-3xl p-10">
-            <div className="flex items-center justify-between mb-6 pb-6 border-b border-white/10">
+          <div className="glass-card rounded-2xl p-8">
+            <div className="flex items-center justify-between mb-6 pb-6" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
               <h2
-                className="text-3xl font-semibold text-glow-cyan"
-                style={{ fontFamily: 'var(--font-outfit)' }}
+                className="text-2xl font-semibold"
+                style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
               >
                 Generated Content
               </h2>
               <span
-                className="px-4 py-2 rounded-full glass-card text-sm font-medium"
-                style={{
-                  fontFamily: 'var(--font-dm-sans)',
-                  color: 'var(--cyan-glow)'
-                }}
+                className="px-3 py-1 rounded-full text-xs font-medium"
+                style={{ background: 'var(--accent-light)', color: 'var(--accent-text)', fontFamily: 'var(--font-dm-sans)' }}
               >
                 {result.sourceChunks} chunks used
               </span>
@@ -336,9 +247,9 @@ export default function DashboardPage() {
             <div
               className="mb-8 leading-relaxed"
               style={{
-                color: 'rgba(255, 255, 255, 0.9)',
+                color: 'var(--text-primary)',
                 fontFamily: 'var(--font-dm-sans)',
-                fontSize: '1.05rem',
+                fontSize: '0.9375rem',
                 whiteSpace: 'pre-wrap'
               }}
             >
@@ -346,46 +257,26 @@ export default function DashboardPage() {
             </div>
 
             {/* Metadata */}
-            <div className="pt-6 border-t border-white/10">
+            <div className="pt-6" style={{ borderTop: '1px solid var(--border-subtle)' }}>
               <div className="grid grid-cols-2 gap-6">
                 <div>
-                  <span
-                    className="block text-sm mb-2"
-                    style={{
-                      color: 'rgba(255, 255, 255, 0.5)',
-                      fontFamily: 'var(--font-dm-sans)'
-                    }}
-                  >
+                  <span className="block text-sm mb-1" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
                     User ID
                   </span>
                   <span
-                    className="font-mono px-3 py-1 rounded-lg glass-card inline-block"
-                    style={{
-                      color: 'var(--glass-white)',
-                      fontFamily: 'var(--font-dm-sans)',
-                      fontSize: '0.9rem'
-                    }}
+                    className="font-mono text-sm px-2 py-1 rounded-md inline-block"
+                    style={{ background: 'var(--bg-tertiary)', color: 'var(--text-primary)' }}
                   >
                     {result.userId}
                   </span>
                 </div>
                 <div>
-                  <span
-                    className="block text-sm mb-2"
-                    style={{
-                      color: 'rgba(255, 255, 255, 0.5)',
-                      fontFamily: 'var(--font-dm-sans)'
-                    }}
-                  >
+                  <span className="block text-sm mb-1" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
                     Content Type
                   </span>
                   <span
-                    className="font-mono px-3 py-1 rounded-lg glass-card inline-block"
-                    style={{
-                      color: 'var(--glass-white)',
-                      fontFamily: 'var(--font-dm-sans)',
-                      fontSize: '0.9rem'
-                    }}
+                    className="font-mono text-sm px-2 py-1 rounded-md inline-block"
+                    style={{ background: 'var(--bg-tertiary)', color: 'var(--text-primary)' }}
                   >
                     {result.contentType}
                   </span>
@@ -396,15 +287,11 @@ export default function DashboardPage() {
         )}
 
         {/* Back to Home Link */}
-        <div className="mt-12 text-center">
+        <div className="mt-10 text-center">
           <a
             href="/"
-            className="inline-flex items-center gap-2 px-6 py-3 glass-card rounded-xl font-medium transition-all duration-300 hover:scale-105 hover:neon-glow-cyan"
-            style={{
-              fontFamily: 'var(--font-dm-sans)',
-              color: 'var(--cyan-glow)',
-              textDecoration: 'none'
-            }}
+            className="inline-flex items-center gap-2 px-5 py-2.5 glass-card rounded-xl text-sm font-medium transition-all"
+            style={{ fontFamily: 'var(--font-dm-sans)', color: 'var(--accent)', textDecoration: 'none' }}
           >
             <span>←</span>
             Back to Homepage

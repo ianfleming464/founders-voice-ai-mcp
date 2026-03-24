@@ -2,23 +2,16 @@
  * Text chunking utility for breaking down long content into embeddable segments
  */
 
+/**
+ * Chunking configuration.
+ *
+ * - `chunkSize`: target size for each chunk in characters. Default: `500`.
+ * - `overlap`: characters shared between chunks to preserve context. Default: `50`.
+ * - `minChunkSize`: chunks smaller than this are merged when possible. Default: `100`.
+ */
 export interface ChunkOptions {
-  /**
-   * Target size for each chunk in characters
-   * @default 500
-   */
   chunkSize?: number;
-
-  /**
-   * Number of characters to overlap between chunks for context preservation
-   * @default 50
-   */
   overlap?: number;
-
-  /**
-   * Minimum chunk size (chunks smaller than this will be merged if possible)
-   * @default 100
-   */
   minChunkSize?: number;
 }
 

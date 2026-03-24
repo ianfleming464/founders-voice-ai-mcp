@@ -25,16 +25,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${outfit.variable} ${dmSans.variable} antialiased`}
+        suppressHydrationWarning
       >
-        {/* Aurora Background */}
-        <div className="aurora-background">
-          <div className="aurora-blob aurora-blob-1"></div>
-          <div className="aurora-blob aurora-blob-2"></div>
-          <div className="aurora-blob aurora-blob-3"></div>
-        </div>
         {children}
       </body>
     </html>

@@ -17,15 +17,14 @@ export interface VectorRecord {
   };
 }
 
+/**
+ * Upload configuration.
+ *
+ * - `batchSize`: batch size for upsert operations. Default: `100`.
+ * - `indexName`: index name override. Defaults to `PINECONE_INDEX_NAME`.
+ */
 export interface UploadOptions {
-  /**
-   * Batch size for upsert operations (default: 100)
-   */
   batchSize?: number;
-
-  /**
-   * Index name (defaults to PINECONE_INDEX_NAME env var)
-   */
   indexName?: string;
 }
 

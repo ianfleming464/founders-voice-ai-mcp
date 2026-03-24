@@ -10,11 +10,17 @@ export interface SearchRequest {
 }
 
 // Search result from Pinecone
+/**
+ * Search result item.
+ *
+ * - `score`: similarity score from `0` to `1`.
+ * - `createdAt`: ISO timestamp for when the source record was created.
+ */
 export interface SearchResult {
   text: string;
-  score: number; // 0-1 similarity score
+  score: number;
   contentType: ContentType;
-  createdAt: string; // ISO timestamp
+  createdAt: string;
   chunkIndex: number;
   totalChunks: number;
   chunkId: string;
