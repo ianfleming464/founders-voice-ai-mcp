@@ -29,12 +29,6 @@ export default function RootLayout({
       <body
         className={`${outfit.variable} ${dmSans.variable} antialiased`}
       >
-        {/* Aurora Background */}
-        <div className="aurora-background">
-          <div className="aurora-blob aurora-blob-1"></div>
-          <div className="aurora-blob aurora-blob-2"></div>
-          <div className="aurora-blob aurora-blob-3"></div>
-        </div>
         {children}
       </body>
     </html>

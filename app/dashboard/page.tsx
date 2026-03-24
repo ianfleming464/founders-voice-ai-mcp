@@ -87,7 +87,7 @@ export default function DashboardPage() {
                 fontFamily: 'var(--font-dm-sans)',
                 fontSize: '0.9rem'
               }}>
-                This page allows direct API testing with manual userId input. Authentication and user profiles coming in Week 3.
+                This page allows direct API testing with manual userId input.
               </p>
             </div>
           </div>
@@ -124,19 +124,13 @@ export default function DashboardPage() {
               }}
             >
               User ID
-              <span
-                className="ml-2 text-xs"
-                style={{ color: 'rgba(255, 255, 255, 0.5)' }}
-              >
-                (Will be auto-filled after auth in Week 3)
-              </span>
             </label>
             <input
               type="text"
               value={userId}
               onChange={(e) => setUserId(e.target.value)}
               className="glass-input w-full px-6 py-4 rounded-2xl text-lg"
-              placeholder="e.g., paul_graham, demo_founder"
+              placeholder="e.g., demo_founder"
               style={{ fontFamily: 'var(--font-dm-sans)' }}
             />
           </div>

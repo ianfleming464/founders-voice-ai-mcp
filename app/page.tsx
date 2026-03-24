@@ -117,7 +117,7 @@ export default function HomePage() {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
+        <div className="flex justify-center">
           <button
             onClick={scrollToDemo}
             className="px-10 py-5 font-semibold rounded-2xl transition-all duration-300 hover:scale-105 neon-glow-purple"
@@ -128,19 +128,7 @@ export default function HomePage() {
               fontSize: '1.125rem'
             }}
           >
-            Try Paul Graham's Voice ✨
-          </button>
-          <button
-            className="px-10 py-5 font-semibold rounded-2xl transition-all duration-300 glass-card"
-            style={{
-              fontFamily: 'var(--font-outfit)',
-              color: 'rgba(255, 255, 255, 0.5)',
-              fontSize: '1.125rem'
-            }}
-            disabled
-          >
-            Create Your Own Voice
-            <span className="ml-2 text-sm">(Coming Soon)</span>
+            Try the Demo
           </button>
         </div>
 
@@ -150,7 +138,7 @@ export default function HomePage() {
         >
           <span className="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
           <span style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
-            Currently in beta • MCP integration Week 2 • Authentication Week 3
+            Currently in beta
           </span>
         </div>
       </section>
@@ -270,15 +258,13 @@ export default function HomePage() {
                 )}
               </div>
 
-              {/* Paul Graham Voice Column */}
+              {/* RAG Voice Column */}
               <div
-                className="rounded-3xl p-8 glass-card"
+                className="rounded-3xl p-8"
                 style={{
-                  background: 'linear-gradient(135deg, rgba(107, 45, 255, 0.15), rgba(0, 212, 255, 0.1))',
-                  backdropFilter: 'blur(20px)',
-                  WebkitBackdropFilter: 'blur(20px)',
+                  background: '#1a1025',
                   border: '1px solid rgba(0, 212, 255, 0.3)',
-                  boxShadow: '0 0 40px rgba(0, 212, 255, 0.2)'
+                  boxShadow: '0 0 20px rgba(0, 212, 255, 0.15)'
                 }}
               >
                 <div className="mb-6">
@@ -286,7 +272,7 @@ export default function HomePage() {
                     className="text-2xl font-bold mb-2 text-glow-cyan"
                     style={{ fontFamily: 'var(--font-outfit)' }}
                   >
-                    Paul Graham Voice (RAG)
+                    Founder Voice (RAG)
                   </h3>
                   <p style={{
                     color: 'rgba(0, 212, 255, 0.9)',
@@ -294,7 +280,7 @@ export default function HomePage() {
                     fontSize: '0.875rem'
                   }}>
                     {ragResult
-                      ? `Powered by ${ragResult.sourceChunks} source chunks from PG essays`
+                      ? `Powered by ${ragResult.sourceChunks} retrieved source chunks`
                       : 'RAG-powered voice cloning'}
                   </p>
                 </div>
@@ -317,36 +303,6 @@ export default function HomePage() {
               </div>
             </div>
 
-            {/* CTA After Generation */}
-            <div className="glass-card rounded-3xl p-10 text-center max-w-4xl mx-auto">
-              <h3
-                className="text-3xl font-bold mb-4 text-glow-purple"
-                style={{ fontFamily: 'var(--font-outfit)' }}
-              >
-                Want your own voice?
-              </h3>
-              <p
-                className="mb-8 text-lg"
-                style={{
-                  color: 'rgba(255, 255, 255, 0.7)',
-                  fontFamily: 'var(--font-dm-sans)'
-                }}
-              >
-                Train your voice with your own content and generate authentic posts, updates, and more.
-              </p>
-              <button
-                className="px-10 py-5 font-semibold rounded-2xl transition-all duration-300 glass-card"
-                style={{
-                  fontFamily: 'var(--font-outfit)',
-                  color: 'rgba(255, 255, 255, 0.5)',
-                  fontSize: '1.125rem'
-                }}
-                disabled
-              >
-                Get Started
-                <span className="ml-2 text-sm opacity-75">(Coming in Week 3)</span>
-              </button>
-            </div>
           </>
         )}
 
@@ -371,11 +327,11 @@ export default function HomePage() {
             >
               <li className="flex items-start gap-3">
                 <span style={{ color: 'var(--cyan-glow)' }}>•</span>
-                <span><strong style={{ color: 'var(--glass-white)' }}>Left (Generic AI):</strong> Standard GPT-4 with no knowledge of Paul Graham's writing style</span>
+                <span><strong style={{ color: 'var(--glass-white)' }}>Left (Generic AI):</strong> Standard GPT-4 with no context about the founder</span>
               </li>
               <li className="flex items-start gap-3">
                 <span style={{ color: 'var(--emerald-glow)' }}>•</span>
-                <span><strong style={{ color: 'var(--glass-white)' }}>Right (PG Voice):</strong> RAG pipeline retrieves relevant chunks from 100K words of PG essays, then generates content matching his voice</span>
+                <span><strong style={{ color: 'var(--glass-white)' }}>Right (Founder Voice):</strong> RAG pipeline retrieves relevant chunks from the founder&apos;s writing, then generates content matching their voice</span>
               </li>
               <li className="flex items-start gap-3">
                 <span style={{ color: 'var(--deep-purple)' }}>•</span>
@@ -445,11 +401,11 @@ export default function HomePage() {
               Paste 1,000+ words of your writing. We use RAG to learn your authentic voice, vocabulary, and style.
             </p>
             <p style={{
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: 'rgba(255, 255, 255, 0.4)',
               fontFamily: 'var(--font-dm-sans)',
               fontSize: '0.875rem'
             }}>
-              (Week 3 feature)
+              Planned
             </p>
           </div>
 
@@ -496,7 +452,7 @@ export default function HomePage() {
               fontSize: '0.875rem',
               fontWeight: '600'
             }}>
-              (Available now - try demo above)
+              Live demo above
             </p>
           </div>
 
@@ -538,11 +494,11 @@ export default function HomePage() {
               Use MCP to connect with Claude Desktop, Cursor, and any AI assistant. Generate in your voice, anywhere.
             </p>
             <p style={{
-              color: 'rgba(255, 255, 255, 0.5)',
+              color: 'rgba(255, 255, 255, 0.4)',
               fontFamily: 'var(--font-dm-sans)',
               fontSize: '0.875rem'
             }}>
-              (Week 2 feature)
+              Planned
             </p>
           </div>
         </div>
@@ -552,9 +508,8 @@ export default function HomePage() {
       <footer
         className="relative z-10 mt-32 py-12"
         style={{
-          borderTop: '1px solid var(--glass-border)',
-          background: 'rgba(18, 8, 40, 0.6)',
-          backdropFilter: 'blur(16px)'
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          background: '#120828'
         }}
       >
         <div className="max-w-6xl mx-auto px-4">
