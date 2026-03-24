@@ -38,10 +38,9 @@ export async function POST(request: NextRequest) {
     }
 
     // Simple generic system prompt - no personalization, no context
-    const systemPrompt = `You are a helpful AI assistant that generates LinkedIn posts.
-Write a professional LinkedIn post (150-300 words) about the topic provided.
-Be clear, engaging, and informative.
-End with a question or call-to-action to drive engagement.`;
+    const systemPrompt = `You are a helpful AI assistant that generates content for startup founders.
+Write a short piece (150-300 words) about the topic provided.
+Be clear, engaging, and informative. Write in a general professional tone.`;
 
     // Generate content using GPT-4 (no RAG)
     const content = await createCompletion({

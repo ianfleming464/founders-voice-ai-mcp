@@ -382,7 +382,7 @@ export default function HomePage() {
                 className="mb-4 text-[0.9375rem] leading-relaxed"
                 style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
               >
-                Upload 1,000+ words of your writing. RAG learns your authentic voice, vocabulary, and style patterns.
+                Upload 100,000+ words of your writing. RAG learns your authentic voice, vocabulary, and style patterns.
               </p>
               <span
                 className="text-xs font-medium px-3 py-1 rounded-full"
