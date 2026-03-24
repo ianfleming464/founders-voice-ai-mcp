@@ -1,7 +1,7 @@
 import { getPineconeIndex } from './client';
 
 // Types
-type ContentType = 'linkedin' | 'investor' | 'newsletter';
+type ContentType = 'linkedin' | 'investor' | 'newsletter' | 'general';
 
 export interface VectorRecord {
   id: string;

@@ -1,5 +1,5 @@
 // Content types
-export type ContentType = 'linkedin' | 'investor' | 'newsletter';
+export type ContentType = 'linkedin' | 'investor' | 'newsletter' | 'general';
 
 // Search request
 export interface SearchRequest {
