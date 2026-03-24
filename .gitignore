@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# learning stuffs
+foundervoice-codebase-guide-ANSWER.md
+foundervoice-codebase-guide-prompt.md
