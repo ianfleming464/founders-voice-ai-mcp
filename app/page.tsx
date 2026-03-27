@@ -92,7 +92,7 @@ export default function HomePage() {
               className="w-6 h-6 rounded-md shrink-0"
               style={{ background: 'linear-gradient(135deg, #0d9488, #059669)' }}
             />
-            Founders Voice
+            FounderVoiceAI
           </span>
           <div className="nav-links">
             <a href="#demo" className="nav-link">Demo</a>
@@ -270,7 +270,7 @@ export default function HomePage() {
                     className="text-lg font-semibold"
                     style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
                   >
-                    Founder Voice
+                    FounderVoiceAI
                   </h3>
                   <p style={{ color: 'var(--accent)', fontSize: '0.8125rem', fontFamily: 'var(--font-dm-sans)' }}>
                     {ragResult
@@ -552,7 +552,7 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
             <div>
               <span className="font-semibold text-base mb-3 block" style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}>
-                Founders Voice AI
+                FounderVoiceAI
               </span>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
                 RAG-powered voice cloning for startup founders. Generate authentic content via MCP.
@@ -585,7 +585,7 @@ export default function HomePage() {
             style={{ borderTop: '1px solid var(--border-subtle)' }}
           >
             <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
-              Founders Voice AI
+              FounderVoiceAI
             </p>
             <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
               Built with Next.js, OpenAI, Pinecone, and MCP
