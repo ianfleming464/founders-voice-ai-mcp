@@ -15,8 +15,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "FounderVoiceAI - Your Voice, Accessible to Any AI Assistant",
-  description: "RAG-powered voice cloning for startup founders. Generate authentic content via MCP.",
+  title: "FounderVoiceAI — RAG-powered founder-style content",
+  description: "RAG-powered founder-style content generation. Retrieval grounds each piece in a real writing corpus.",
 };
 
 export default function RootLayout({
