@@ -114,17 +114,17 @@ export default function HomePage() {
           className="text-5xl sm:text-6xl md:text-[4.5rem] leading-[1.08] font-bold mb-8 tracking-tight"
           style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
         >
-          Your Voice, Accessible
+          Founder-Voice Content,
           <br />
-          to <span className="gradient-text">Any AI Assistant</span>
+          <span className="gradient-text">Powered by RAG</span>
         </h1>
 
         <p
           className="text-lg md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed"
           style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
         >
-          RAG-powered voice cloning for startup founders. Generate authentic content
-          that sounds like you — directly from your AI assistant.
+          Generate content in a founder&apos;s writing style — retrieval-augmented generation
+          grounds each piece in a real corpus, so the output reads like the source, not generic AI.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -150,7 +150,6 @@ export default function HomePage() {
             <span className="tech-item">Next.js</span>
             <span className="tech-item">OpenAI</span>
             <span className="tech-item">Pinecone</span>
-            <span className="tech-item">MCP</span>
             <span className="tech-item">TypeScript</span>
           </div>
         </div>
@@ -164,13 +163,14 @@ export default function HomePage() {
             className="text-4xl md:text-5xl font-bold mb-4 tracking-tight"
             style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
           >
-            See the Difference
+            See What Retrieval Does
           </h2>
           <p
             className="text-lg max-w-xl mx-auto"
             style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
           >
-            Compare standard AI output vs RAG-powered voice cloning
+            Same prompt, two outputs — standard GPT-4 with no context, versus a RAG pipeline
+            that retrieves relevant passages from the founder&apos;s writing first. The difference is what grounding adds.
           </p>
         </div>
 
@@ -275,7 +275,7 @@ export default function HomePage() {
                   <p style={{ color: 'var(--accent)', fontSize: '0.8125rem', fontFamily: 'var(--font-dm-sans)' }}>
                     {ragResult
                       ? `RAG-powered · ${ragResult.sourceChunks} source chunks`
-                      : 'RAG-powered voice cloning'}
+                      : 'RAG-powered founder-style generation'}
                   </p>
                 </div>
               </div>
@@ -324,7 +324,7 @@ export default function HomePage() {
                   2
                 </div>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
-                  <strong style={{ color: 'var(--text-primary)' }}>Right column</strong> — RAG pipeline retrieves relevant chunks from the founder&apos;s writing, then generates content in their voice
+                  <strong style={{ color: 'var(--text-primary)' }}>Right column</strong> — RAG pipeline retrieves relevant chunks from a curated founder-writing corpus, then generates founder-style content
                 </p>
               </div>
               <div className="flex items-start gap-4">
@@ -335,7 +335,7 @@ export default function HomePage() {
                   =
                 </div>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '0.9375rem' }}>
-                  Both use the same prompt — the difference shows the power of RAG-based voice cloning
+                  Both use the same prompt — the difference shows what retrieval-based grounding adds
                 </p>
               </div>
             </div>
@@ -356,13 +356,13 @@ export default function HomePage() {
               className="text-4xl md:text-5xl font-bold mb-4 tracking-tight"
               style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
             >
-              Three Steps to Your Voice
+              Three Steps to Founder-Style Content
             </h2>
             <p
               className="text-lg max-w-xl mx-auto"
               style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
             >
-              From raw writing samples to AI-generated content that sounds like you
+              From a curated founder-writing corpus to retrieval-grounded content
             </p>
           </div>
 
@@ -376,19 +376,19 @@ export default function HomePage() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
               >
-                Train Your Voice
+                Ground in a Corpus
               </h3>
               <p
                 className="mb-4 text-[0.9375rem] leading-relaxed"
                 style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
               >
-                Upload 100,000+ words of your writing. RAG learns your authentic voice, vocabulary, and style patterns.
+                The app draws on a curated corpus of founder writing, chunked and embedded for retrieval.
               </p>
               <span
                 className="text-xs font-medium px-3 py-1 rounded-full"
                 style={{ background: 'var(--bg-tertiary)', color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}
               >
-                Planned
+                Live
               </span>
             </div>
 
@@ -401,19 +401,19 @@ export default function HomePage() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
               >
-                Generate Content
+                Generate in Format
               </h3>
               <p
                 className="mb-4 text-[0.9375rem] leading-relaxed"
                 style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
               >
-                Create LinkedIn posts, investor updates, and more. Every piece sounds authentically like you.
+                Produce founder-style content grounded in the retrieved writing.
               </p>
               <span
                 className="text-xs font-medium px-3 py-1 rounded-full"
                 style={{ background: 'var(--accent-light)', color: 'var(--accent-text)', fontFamily: 'var(--font-dm-sans)' }}
               >
-                Live — try demo above
+                Live — try the demo above
               </span>
             </div>
 
@@ -426,13 +426,13 @@ export default function HomePage() {
                 className="text-xl font-semibold mb-3"
                 style={{ fontFamily: 'var(--font-outfit)', color: 'var(--text-primary)' }}
               >
-                Integrate with AI
+                Custom corpora
               </h3>
               <p
                 className="mb-4 text-[0.9375rem] leading-relaxed"
                 style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
               >
-                Use MCP to connect with Claude Desktop, Cursor, and any AI assistant. Generate in your voice, anywhere.
+                Upload your own writing to ground generation in your voice.
               </p>
               <span
                 className="text-xs font-medium px-3 py-1 rounded-full"
@@ -459,7 +459,7 @@ export default function HomePage() {
             className="text-lg max-w-xl mx-auto"
             style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}
           >
-            How retrieval-augmented generation powers authentic voice cloning
+            How retrieval-augmented generation grounds founder-style content
           </p>
         </div>
 
@@ -523,26 +523,6 @@ export default function HomePage() {
             </p>
           </div>
 
-          <div className="glass-card rounded-2xl p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div
-                className="w-10 h-10 rounded-xl flex items-center justify-center"
-                style={{ background: 'var(--accent-light)' }}
-              >
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <rect x="3" y="8" width="5" height="9" rx="1" stroke="var(--accent)" strokeWidth="1.5" />
-                  <rect x="12" y="3" width="5" height="14" rx="1" stroke="var(--accent)" strokeWidth="1.5" />
-                  <path d="M8 12h4" stroke="var(--accent)" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-              </div>
-              <h3 className="text-lg font-semibold" style={{ fontFamily: 'var(--font-outfit)' }}>
-                MCP Integration
-              </h3>
-            </div>
-            <p className="text-[0.9375rem] leading-relaxed" style={{ color: 'var(--text-secondary)', fontFamily: 'var(--font-dm-sans)' }}>
-              Expose voice generation as MCP tools so Claude Desktop, Cursor, or any compatible assistant can use it natively.
-            </p>
-          </div>
         </div>
       </section>
 
@@ -555,7 +535,7 @@ export default function HomePage() {
                 FounderVoiceAI
               </span>
               <p className="text-sm leading-relaxed" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
-                RAG-powered voice cloning for startup founders. Generate authentic content via MCP.
+                RAG-powered founder-style content generation, grounded in a curated writing corpus.
               </p>
             </div>
             <div>
@@ -576,7 +556,6 @@ export default function HomePage() {
                 <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>Next.js 16</p>
                 <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>OpenAI GPT-4</p>
                 <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>Pinecone</p>
-                <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>Model Context Protocol</p>
               </div>
             </div>
           </div>
@@ -588,7 +567,7 @@ export default function HomePage() {
               FounderVoiceAI
             </p>
             <p className="text-sm" style={{ color: 'var(--text-tertiary)', fontFamily: 'var(--font-dm-sans)' }}>
-              Built with Next.js, OpenAI, Pinecone, and MCP
+              Built with Next.js, OpenAI, and Pinecone
             </p>
           </div>
         </div>
